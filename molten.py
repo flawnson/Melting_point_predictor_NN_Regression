@@ -45,7 +45,7 @@ int_norm_smiles = []
 
 def int_and_norm(smiles_strings):
   for smiles in tqdm(smiles_strings):
-    int_norm_smiles.append([(char_to_int[char] / charset_len) for char in tqdm(smiles)])
+    int_norm_smiles.append([(char_to_int[char] / charset_len) for char in smiles])
   return int_norm_smiles
 
 int_and_norm(smiles_strings)
@@ -76,6 +76,10 @@ Y = norm_melting_points_celcius
 
 assert len(X) == len(Y), "X data and Y data are not the same size"
 
+# Show graph of Dataset before splitting
+sns.distplot(Y)
+plt.show()
+
 """SPLITTING DATA PREPROCESSING"""
 #Split dataset into training and testing sets
 def data_splitter(dataset, train_percent):
@@ -89,8 +93,7 @@ Y_data_train, Y_data_test = data_splitter(Y, .9)
 
 # Y_data_train = torch.from_numpy(Y_data_train)
 # Y_data_test = torch.from_numpy(Y_data_test)
-plt.hist(Y)
-plt.show
+
 # Turn datasets into tensors as input for Neural Network model
 def tensorizer(datasets):
   datasets = np.asarray(datasets)
@@ -167,6 +170,3 @@ for epoch in range(epochs):
         if epoch % 10 == 9:
             print('Epochs: %5d | Loss: %.3f' % (epoch + 1, running_loss / 10))
             running_loss = 0.0
-
-plt.hist(prediction)
-plt.show
