@@ -5,6 +5,7 @@ The purpose of this project is to train a neural network on the patterns found i
 
 import pandas as pd
 import numpy as np
+import scipy.stats as stats
 import torch
 import torch.nn as nn
 import torch.nn.functional as fun
@@ -63,6 +64,26 @@ def pad(int_norm_smiles):
 pad(int_norm_smiles)
 
 """Y (MELTING POINT TEMPERATES IN CELCIUS) DATA PREPROCESSING"""
+# Data metrics, stats, graphs, and plots
+sns.distplot(melting_points_celcius).set_title("Melting Point Temperatures (Celcius)")
+plt.show()
+
+mean = np.mean(melting_points_celcius)
+median = np.median(melting_points_celcius)
+mode = stats.mode(melting_points_celcius, axis=None)
+data_range = np.ptp(melting_points_celcius)
+maximum = np.amax(melting_points_celcius)
+minimum = np.amin(melting_points_celcius)
+
+print(
+      "\nMean = {0}".format(mean),
+      "\nMedian = {0}".format(median),
+      "\nMode = {0}".format(mode),
+      "\nRange = {0}".format(data_range),
+      "\nMaximum = {0}".format(maximum),
+      "\nMinimum = {0}".format(minimum),
+)
+
 # Normalize the melting point temperatures in a range of -1 to 1 (to account for the negative values of the dataset)
 def norm(melting_points):
   norm_melting_points_celcius = 2 * (melting_points - np.min(melting_points)) / np.ptp(melting_points) - 1
@@ -75,10 +96,6 @@ X = pad_int_norm_smiles
 Y = norm_melting_points_celcius
 
 assert len(X) == len(Y), "X data and Y data are not the same size"
-
-# Show graph of Dataset before splitting
-sns.distplot(Y)
-plt.show()
 
 """SPLITTING DATA PREPROCESSING"""
 #Split dataset into training and testing sets
